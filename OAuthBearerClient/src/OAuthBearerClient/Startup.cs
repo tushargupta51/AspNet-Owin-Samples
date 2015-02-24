@@ -18,10 +18,6 @@ using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Security.OpenIdConnect;
 
-#if ASPNET50
-using OAuthBearerClient.Logging;
-#endif
-
 namespace OAuthBearerClient
 {
     public class Startup
@@ -71,11 +67,8 @@ namespace OAuthBearerClient
         {
 			// Configure the HTTP request pipeline.
 			// Add the console logger.
-#if ASPNET50
-			loggerfactory.AddEventSourceLogger();
-#else
 			loggerfactory.AddConsole();
-#endif
+
 			// Add the following to the request pipeline only in development environment.
 			if (string.Equals(env.EnvironmentName, "Development", StringComparison.OrdinalIgnoreCase))
             {
