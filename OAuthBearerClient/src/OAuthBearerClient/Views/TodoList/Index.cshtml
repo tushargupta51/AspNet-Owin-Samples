@@ -1,0 +1,14 @@
+﻿@{
+	ViewBag.Title = "To do List";
+}
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+
+@if (ViewBag.Message == "Success")
+{
+	<p>@ViewBag.Content</p>
+}
+else
+{
+	<p>No data Received</p>
+}
