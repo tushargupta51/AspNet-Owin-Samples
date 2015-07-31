@@ -1,11 +1,9 @@
 ﻿using System;
+using System.IdentityModel.Tokens;
+using Microsoft.AspNet.Authentication.OAuthBearer;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Http;
-using Microsoft.AspNet.Routing;
 using Microsoft.Framework.DependencyInjection;
-using Microsoft.AspNet.Security.OAuthBearer;
-using System.IdentityModel.Tokens;
 
 namespace OAuthBearerAPI
 {
@@ -31,7 +29,7 @@ namespace OAuthBearerAPI
 			{
 				options.Authority = "https://login.windows.net/tushartest.onmicrosoft.com";
 				options.Audience = "https://TusharTest.onmicrosoft.com/TodoListService-ManualJwt";
-				options.AuthenticationType = OAuthBearerAuthenticationDefaults.AuthenticationType;
+				options.AuthenticationScheme = OAuthBearerAuthenticationDefaults.AuthenticationScheme;
 				options.TokenValidationParameters = new TokenValidationParameters
 				{
 					ValidateLifetime = false

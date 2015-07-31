@@ -1,7 +1,7 @@
 ﻿using System;
+using Microsoft.AspNet.Authentication.OpenIdConnect;
+using Microsoft.AspNet.Http.Authentication;
 using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Http.Security;
-using Microsoft.AspNet.Security.OpenIdConnect;
 
 namespace OAuthBearerClient.Controllers
 {
@@ -11,7 +11,7 @@ namespace OAuthBearerClient.Controllers
         {
 			if (Context.User == null || !Context.User.Identity.IsAuthenticated)
 			{
-				Context.Response.Challenge(new AuthenticationProperties { RedirectUri = "/" }, OpenIdConnectAuthenticationDefaults.AuthenticationType);
+				Context.Authentication.ChallengeAsync(OpenIdConnectAuthenticationDefaults.AuthenticationScheme, new AuthenticationProperties { RedirectUri = "/" });
 				return View();
 			}
 			else
@@ -22,7 +22,7 @@ namespace OAuthBearerClient.Controllers
 
         public IActionResult LogOff()
         {
-			Context.Response.SignOut(OpenIdConnectAuthenticationDefaults.AuthenticationType);
+			Context.Authentication.SignOutAsync(OpenIdConnectAuthenticationDefaults.AuthenticationScheme);
 			return RedirectToAction("Index", "Home");
 		}
 

@@ -1,20 +1,19 @@
-﻿using Microsoft.AspNet.Http.Security;
-using Microsoft.AspNet.Mvc;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Mvc;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using TodoListWebApp.Utils;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace OAuthBearerClient.Controllers
 {
-	[Authorize]
+    [Authorize]
     public class TodoListController : Controller
     {
 		private const string todoListBaseAddress = "http://localhost:62089/";
@@ -28,17 +27,14 @@ namespace OAuthBearerClient.Controllers
 		// GET: /<controller>/
 		public async Task<ActionResult> Index()
         {
-			Microsoft.IdentityModel.Clients.ActiveDirectory.AuthenticationResult result = null;
+			AuthenticationResult result = null;
 
 			try
 			{
 
-				//string userObjectID = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-				AuthenticationContext authContext = new AuthenticationContext(authority);
+				string userObjectID = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+				AuthenticationContext authContext = new AuthenticationContext(authority, new NaiveSessionCache(userObjectID, Context.Session));
 				ClientCredential credential = new ClientCredential(clientId, appKey);
-//#if ASPNET50
-//				result = await authContext.AcquireTokenAsync(todoListResourceId, clientId, new Uri("http://localhost:42023"), null);
-//#endif
 				result = await authContext.AcquireTokenAsync(todoListResourceId, credential);
 
 				//
